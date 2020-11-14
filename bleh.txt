@@ -1,0 +1,48 @@
+
+/*
+func printYes() {
+	fmt.Println("yes")
+}
+
+func printNo() {
+	fmt.Println("No")
+}
+
+func main() {
+	commands := map[string]func(){"yes": printYes, "no": printNo}
+
+	fn, ok := commands["yes"]
+
+	if ok {
+		fn()
+	}
+
+}
+*/
+
+/*
+func main() {
+
+	s := &http.Server{
+		Addr:           ":3000",
+		Handler:        nil,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	http.Handle("/socket", handleSocket)
+
+	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+	})
+
+	log.Fatal(s.ListenAndServe())
+}
+
+func handleSocket(w http.ResponseWriter, r *http.Request){
+
+}
+*/
+
+//	connections := make(map[net.Conn]int)
