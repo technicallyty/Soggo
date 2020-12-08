@@ -15,7 +15,7 @@ type Pool struct {
 	Register   chan *Client
 	Unregister chan *Client
 	Clients    map[*Client]bool
-	Rooms      map[string][]*Client
+	Rooms      map[string]*Room
 	JoinRoom   chan *Client
 	CreateRoom chan *Client
 	Broadcast  chan Message
@@ -27,7 +27,7 @@ func NewPool() *Pool {
 		Register:   make(chan *Client),
 		Unregister: make(chan *Client),
 		Clients:    make(map[*Client]bool),
-		Rooms:      make(map[string][]*Client),
+		Rooms:      make(map[string]*Room),
 		JoinRoom:   make(chan *Client),
 		CreateRoom: make(chan *Client),
 		Broadcast:  make(chan Message),
@@ -67,10 +67,15 @@ func (pool *Pool) Start() {
 			if !ok {
 				err := Message{Type: 0, Body: ErrorJoiningRoom}
 				client.Conn.WriteJSON(err)
-				log.Fatal(ErrorJoiningRoom)
+				log.Println(ErrorJoiningRoom)
 			} else {
-				pool.Rooms[client.Room] = append(pool.Rooms[client.Room], client)
+				pool.Rooms[client.Room].Clients[client] = true
+				pool.Rooms[client.Room].BroadcastJoin(client.Nick)
 			}
+		case client := <-pool.CreateRoom:
+			fmt.Println("In pool creating room.")
+			roomID := "1234"
+			pool.Rooms[roomID] = NewRoom(roomID, client)
 		}
 	}
 }
